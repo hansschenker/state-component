@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin =
 module.exports = {
   mode: 'development',
   entry: {
-    bundle: path.resolve(__dirname, 'src/index.js'),
+    bundle: path.resolve(__dirname, 'src/index.ts'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -27,6 +27,10 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+      },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
@@ -53,6 +57,6 @@ module.exports = {
       filename: 'index.html',
       template: 'src/template.html',
     }),
-    new BundleAnalyzerPlugin(),
+    //new BundleAnalyzerPlugin(),
   ],
 }

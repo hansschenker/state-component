@@ -1,14 +1,65 @@
-// DEMO JOKE APP
-//import generateJoke from './generateJoke'
-import "./styles/main.scss";
-const logo = require("./assets/laughing.svg") as string;
 
-const laughImg = document.getElementById('laughImg')! as HTMLImageElement
-laughImg.src = logo
 
-console.log("Hello from Index.ts!");
+import { BehaviorSubject } from "rxjs";
 
-// const jokeBtn = document.getElementById('jokeBtn')!
-// jokeBtn.addEventListener('click', generateJoke)
+function stateComponent<T>(initialValue: T, 
+                           elementId: string, 
+                           tag: string, 
+                           render: (value: T, elementId: string, tag: string) => void) {
 
-// generateJoke()
+    const state = new BehaviorSubject<T>(initialValue);
+    state.subscribe(value => render(value, elementId, tag));
+    
+    return state;
+}
+
+type Component<T, K extends keyof T> = {
+    render: (props: Pick<T, K>, elementId: string, elementTag: string) => HTMLElement;
+};
+
+const renderProperty = (value: string | number, elementId: string, elementTag: string) => {
+    
+    let element = document.getElementById(elementId);
+    if (!element) {
+        element = document.createElement(elementTag);
+        element.id = elementId;
+        document.body.appendChild(element);
+    }
+    element.textContent = `${value}`;
+};
+
+// --------------------------          product.ts          --------------------------
+type Product = {
+    title: string;
+    price: number;
+    description: string;
+};
+
+const product:Product = { title: "Coffee Mug", price: 500, description: "A large coffee mug." };
+stateComponent(product.title, 'product-title', 'h1', renderProperty);
+stateComponent(product.price, 'product-price', 'h2', renderProperty);
+stateComponent(product.description, 'product-description', 'h3', renderProperty);
+
+
+// --------------------------          product.ts          --------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
